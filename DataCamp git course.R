@@ -179,6 +179,34 @@ git status
 git clone https://github.com/datacamp/project.git  # or:
 git clone https://github.com/datacamp/project.git new.name
 # this copies the new project into your directory
+# by default, the remote repository is called origin
+
+# Then, you can list the names of remotes:
+git remote  # or, if you want more info:
+git remote -v  # for verbose
+
+# You can add more remotes using:
+git remote add remote-name URL
+# Or remove existing ones:
+git remote rm remote-name
+
+# Git keeps track of remote repositories so that you can pull changes
+# from them and push changes to them
+
+# A typical workflow is that you pull in your collaborators
+# work from the remote repository so you have the latest version, 
+# do some work yourself and the push back to the remote
+
+# copy everything in the "branch.name" branch in the "remote" repo
+# to your current branch of your local repo
+git pull remote branch.name
+
+# when you pull, both branches are merged
+
+
+
+
+
 
 
 
