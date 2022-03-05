@@ -135,7 +135,7 @@ git branch
 
 # to list the differences between branches:
 git diff branch1 branch2
-
+git diff branch1 -- branch2
 
 # use "checkout" to switch from one branch to another:
 git checkout branch.to.go.to  # you move to your secondary branch
