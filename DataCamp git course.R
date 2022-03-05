@@ -171,6 +171,14 @@ git status
 # then you have to remove the conflicted lines to be able to proceed
 
 
+# 8. Remote repositories and Colaboration ------------
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+# Ehen you join a project that is already running, you can "clone" it:
+
+git clone https://github.com/datacamp/project.git  # or:
+git clone https://github.com/datacamp/project.git new.name
+# this copies the new project into your directory
 
 
 
