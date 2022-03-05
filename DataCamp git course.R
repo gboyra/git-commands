@@ -92,6 +92,7 @@ git reset HEAD
 #
 # undo changes that have not yet been staged:
 git checkout -- "length.R"  
+# notice the "--" separating checkout and the file name
 # careful: when you discard changes this way, they are gone forever
 
 # You can combine reset and checkout to do both things
@@ -174,6 +175,8 @@ git status
 # 8. Remote repositories and Colaboration ------------
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++
  
+# 8.1 Cloning a remote repository -------------
+
 # Ehen you join a project that is already running, you can "clone" it:
 
 git clone https://github.com/datacamp/project.git  # or:
@@ -181,15 +184,21 @@ git clone https://github.com/datacamp/project.git new.name
 # this copies the new project into your directory
 # by default, the remote repository is called origin
 
-# Then, you can list the names of remotes:
-git remote  # or, if you want more info:
-git remote -v  # for verbose
 
-# You can add more remotes using:
+# 8.2 Adding a remote repository to your project ------------
+
+# You can add one more remotes using:
 git remote add remote-name URL
 # Or remove existing ones:
 git remote rm remote-name
 
+# Then, you can list the names of remotes:
+git remote  # or, if you want more info:
+git remote -v  # for verbose
+
+
+
+# 8.3 Pull changes from the remotes -----------
 # Git keeps track of remote repositories so that you can pull changes
 # from them and push changes to them
 
@@ -197,17 +206,30 @@ git remote rm remote-name
 # work from the remote repository so you have the latest version, 
 # do some work yourself and the push back to the remote
 
-# copy everything in the "branch.name" branch in the "remote" repo
+# copy everything in the "remote-branch" branch in the "remote-repo" repo
 # to your current branch of your local repo
-git pull remote branch.name
+git pull remote-repo remote-branch
 
 # when you pull, both branches are merged
 
+# Git tends to stop you from switching branches with unsaved work
+# It also stops you from pullin changes when this might overrite 
+# what you have done locally
+# The fix is simple: either commit or revert your local changes
+# and try again
 
+# 8.4 Push changes from the local to the remote ----------
+# To upload changes to the remote, use push:
+git push remote-repo local-branch
+# this pushes the content of "local-branch-name" into a branch
+# with the same name in the "remote-name" repo
+# It is possible to use different branch names in both ends
+# but this quickly becomes confusing, so it is discouraged
+# Normally it is better to use the same branche names across repos
 
-
-
-
-
+# To prevent you from overwriting others' work
+# Git does not allow you to push changes to a remote 
+# unless you have merged the contents of the remote
+# into your own work
 
 
