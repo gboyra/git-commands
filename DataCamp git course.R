@@ -53,8 +53,8 @@ git diff hash1 hash2
 git diff HEAD~1 HEAD~3
 
 
-# 3. Remove untracked files -----------
-#++++++++++++++++++++++++++++++++++++++
+# 3. Remove files -----------
+#++++++++++++++++++++++++++++
 
 # to show a list of unwanted (untracked) files:
 git clean -n 
@@ -62,6 +62,13 @@ git clean -n
 git clean -f
 # git clean only works with untracked files, it you remove them it is for ever
 
+
+# But is far safer to remove tracked files 
+# (because you can always restore them later)
+git add "length.R" 
+git commit -m "Add lenght.R to the repository"
+git rm "length.R" # remove file and stages the change in one step
+git commit -m "Removing file length.R frorm the directory"  # commit the removal
 
 
 # 5. Configuration ------------
@@ -132,10 +139,27 @@ git diff branch1 branch2
 # use "checkout" to switch from one branch to another:
 git checkout branch.to.go.to  # you move to your secondary branch
 
-git rm "length.R" # remove file and stages the change in one step
-git commit -m "Removing file length.R"  # commit the removal
 git checkout master   # go back to your primary branch
 ls  # checkout that the file is not there
+
+# to create a branch you use git branch:
+git branch branch.name
+
+# you can also create a branch and switch to it in the same step with checkout -b:
+git checkout -b branch.name
+
+# 7.1 Merging branches ----------
+
+# When you merge one branch (source) into another (destination), 
+# git adds the changes on the source to the destination
+# If the changes don't overlap (no conflicts), the result is a new commit 
+# in the destination branch with all the changes from the source
+
+git merge source destination
+
+# When you are in one branch, all the changes on the open scripts are 
+# commited in this branch
+
 
 
 
