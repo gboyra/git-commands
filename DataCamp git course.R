@@ -154,11 +154,22 @@ git checkout -b branch.name
 # git adds the changes on the source to the destination
 # If the changes don't overlap (no conflicts), the result is a new commit 
 # in the destination branch with all the changes from the source
-
+# (you have to be in the destination branch to do the following)
 git merge source destination
 
 # When you are in one branch, all the changes on the open scripts are 
 # commited in this branch
+
+# Conflicts: changes in the same lines of code
+# when you compare two branches, the conflicts are seen in red color
+git diff source destination
+
+git merge source destination 
+# when there is a conflict message, you can type "git status"
+git status
+# and some info on conflicts will be provided
+# then you have to remove the conflicted lines to be able to proceed
+
 
 
 
