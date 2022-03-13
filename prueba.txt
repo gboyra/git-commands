@@ -1,1 +1,2 @@
 Creo un archivo de prueba para aprender como funciona checkout
+Añado una fila nueva
