@@ -30,11 +30,12 @@ alias notepad="c:/Users/gboyra/Notepad++/notepad++.exe"
 # (for blank spaces inside names use quotes: both "" and '')
 ls # mostrar los archivos y carpetas
 pwd # print working directory
-dd # change directory
+cd # change directory
 cd .. # directorio superior (up)
 cd . # directorio actual - puede ser util dentro de un script
 cd -  # directorio anterior (back)
-  ~ is the current working directory
+cd ~  # home directory
+~  # is the current home directory
 whoamI # devuelve el usuario
 ls -F # the minus is a "flag"
 # pinta una barra cuando es un directorio
@@ -45,7 +46,7 @@ ls nombre.dir # proporciona los archivos dentro del directorio
 ls -l  nombre.dir #  combina flag y directorio
 ls -lF # combina flags
 ls - a # "all" muestra todo el contenido (incluidos ocultos)
-(hay un montón de programas que no muestran los archivos que empiezan con un  "." en el nombre)
+# (hay un montón de programas que no muestran los archivos que empiezan con un  "." en el nombre)
 ls -R # Recursive: muestra los subdirectorios y archivos de cada directorio
 ls -h # human readable useful y combination with -l:
 ls -lh
@@ -374,6 +375,10 @@ git checkout -b new.branch  # create new branch version 2
 # Check the current branch
 git branch # lists all the branches you have
 # current branch is highlighted with an "*"
+
+# rename a branch with -m or -M modifier
+git branch -M new-name
+
 # Moverse a la nueva branch
 git checkout new.branch
 # Compare both branches:
@@ -403,6 +408,7 @@ git merge master  # master overrides testing
 # esto es un ejemplo de "fast-forward" merging
 # (5) now you can delete the secondary branch:
 git branch -d secondary
+# to delete a branch, you can't be checkout on it
 
 
 # 2.5.2 Solve conflicts --------------------
@@ -412,15 +418,16 @@ git branch -d secondary
 # in two branches, this creates a conflict
 # If there is a conflict you solve it manually by opening in an editor
 # git will have set flags to identify the conflicts
+
 # Delete the new branch
 git branch -d new.branch
 
 git log --oneline
 # Mirar el archivo galaxies.txt en un estado anterior 
-# (definido por el sha.number listado por log)
-git show sha.number galaxies.txt
-# Entrar en un branch anterior para hacer cambios en él
-git chechout a1b567
+# (definido por el hash.code listado por log)
+git show hash.code galaxies.txt
+# Entrar en un commit anterior para hacer cambios en él
+git checkout a1b567
 
 # 2.5.3 SURPRISE branch -------------
 #++++++++++++++++++++++++++++++++++++
@@ -436,8 +443,8 @@ git chechout a1b567
 # If we now try to delete the surprise branch git won't allow us
 
 
-# 2.6 COLLABORATION - REMOTE - GitHub -----------
-#++++++++++++++++++++++++++++++++++++++++++++++++
+# 2.6 REMOTE - GitHub -----------
+#++++++++++++++++++++++++++++++++
 
 # Bitbucket.com free private repositories
 
@@ -445,6 +452,9 @@ git chechout a1b567
 # Then, you add the remote location to your local repository:
 # git remote add remote-repo-name remote-ip.address
 git remote add origin ip.address  # you call it "origin"
+
+# you check it is there:
+git remote -v  # -v: verbose
 
 # Now, you can send the data:
 # (from your local branch to a remote branch of the same name)
