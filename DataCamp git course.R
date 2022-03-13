@@ -19,6 +19,13 @@ git add "length.R"
 # 2. See changes ----------
 #++++++++++++++++++++++++++
 
+# 2.1 diff: changes between saved and added files -------
+
+# The diff command prints the changes in a file between:
+# the last saved-to-disk version 
+# and the last saved-to-repo version of the same file
+# i.e., it doesn't account for unsaved changes in the file
+
 # to know what changes are made in current files of the repository:
 git diff
 # changes in a particular file:
@@ -26,12 +33,12 @@ git diff "length.R"
 # changes in a particular file in other directory:
 git diff "data/length.R"
 
-# to compare the state the repository files with those in the staging area:
+# to compare the state of the repository files with those in the staging area:
 git diff -r HEAD
 # -r refers to 
 # HEAD refers to the most recent commit
 
-# to compare the staate of a file with that of the staging area:
+# to compare the state of a file with that of the staging area:
 git diff -r HEAD "length.R"
 
 git log -2
@@ -85,27 +92,63 @@ git config --global user.email gboyra@azti.es
 # 6. UNDO changes ------------
 #++++++++++++++++++++++++++++++
 
-# to remove an addition to stage, for example:
+# 6.1 Remove an addition to stage -----
+#++++++++++++++++++++++++++++++++++++++
 git add "analysis.R"  # you reset:
-git reset HEAD
+git reset HEAD  # or:
+git reset analysis.R
 
-#
-# undo changes that have not yet been staged:
+# 6.2 undo changes that have not yet been staged ----
+#++++++++++++++++++++++++++++++++++++++++++++++++++++
 git checkout -- "length.R"  
 # notice the "--" separating checkout and the file name
 # careful: when you discard changes this way, they are gone forever
 
-# You can combine reset and checkout to do both things
-# First reset the staged changes
+# 6.3 Combine reset and checkout to do both things ----------
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# First unstage the file 
 git reset HEAD "length.R"  # or:
 git reset "length.R"
-# And then unstage the file
+# And then reset the unstaged changes
 git checkout -- "length.R"
 
-# to restore an old version of a file:
-git checkout hash length.R
-# and don't forget to commit the change:
-git commit -m "restore and old version"
+# 6.4a See an old version of a file ---------
+#+++++++++++++++++++++++++++++++++++++++++++++++
+git show hash-code file-name  
+# you can see the old version of the file like this
+# but it will show it in the command line
+# not really useful for long files
+# It is better to apply the procedure described next:
+
+# 6.4b Restore an old version of a file ---------
+#+++++++++++++++++++++++++++++++++++++++++++++++
+git checkout hash-code length.R
+# and then you have to commit the change:
+git commit -m "restore an old version of a file" 
+# if you want to cancel the restoration, type:
+git checkout -- length.R
+# and the file will go back to its previous state
+
+# Don't forget to type the file name after the hash code,
+# otherwise you will restore the whole repository to that stage
+# as it's explained in the next section
+
+# 6.5 Restore an old version of the repository ---------
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+git checkout hash-code 
+# When you do this, you move the HEAD to the hash
+# you create a "detached" HEAD and are no longer in a branch. 
+# All the commits done in all files after the checkout hash
+# are temporarily discarded.
+# Git creates a kind of a "temporary" branch
+# that you can revert by typing:
+git switch -
+# or you can convert this into a new branch typing:
+git switch -c <new-branch-name>
+# In this temporary branch you can look around, do commits
+# and if you then switch out, all the changes will be gone
+# but if you switch to a new branch, you will keep them 
+
 
 # to undo changes to many files at once:
 git reset
@@ -150,35 +193,70 @@ git branch branch.name
 git checkout -b branch.name
 
 # 7.1 Merging branches ----------
+#++++++++++++++++++++++++++++++++
 
 # When you merge one branch (source) into another (destination), 
 # git adds the changes on the source to the destination
 # If the changes don't overlap (no conflicts), the result is a new commit 
 # in the destination branch with all the changes from the source
 # (you have to be in the destination branch to do the following)
-git merge source destination
+git merge source destination  # or, simply:
+git merge source
 
 # When you are in one branch, all the changes on the open scripts are 
 # commited in this branch
 
-# Conflicts: changes in the same lines of code
+
+# 7.2 Conflicts solving ---------
+#++++++++++++++++++++++++++++++++
+
+# Conflict: both parents have changes in the same line of code
 # when you compare two branches, the conflicts are seen in red color
-git diff source destination
+git diff source destination 
 
 git merge source destination 
 # when there is a conflict message, you can type "git status"
 git status
 # and some info on conflicts will be provided
-# then you have to remove the conflicted lines to be able to proceed
+
+# You can also type 
+git diff dest_branch source_branch
+
+# But the best is to open each conflicted file, by typing:
+open conflicted_file.txt
+
+# There will be markers delimiting each conflicting line groups
+# <<<<<<<<< <Destination_branch>
+#  Changes in destination_branch
+# ===
+#  Changes in source_branch
+# >>>>>>>> <source_branch>
+
+# Then you have to remove the conflicted lines to be able to proceed
+# (remove always full lines)
+# (1) Solve the conflicts
+#   You have to remove either (one or the other, not both):
+#    -lines between <<< and ===
+#    -lines between === and >>>
+# (2) Then remove also ALL the lines starting with markers
+# (3) Save the conflicted files
+# (4) Stage the files
+# (5) Commit the changes
 
 
-# 8. Remote repositories and Colaboration ------------
+# 8. Remote repositories and Collaboration ------------
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++
  
 # 8.1 Cloning a remote repository -------------
 
-# Ehen you join a project that is already running, you can "clone" it:
+# When you join a project that is already running, you can "clone" it
 
+# Note: the remote repository has to be public
+#       Or you have to have been invited to it and have accepted 
+
+# First you have to create a RStudio project on your PC,
+# start a git repository in it (git init) 
+# and then type from the terminal:
 git clone https://github.com/datacamp/project.git  # or:
 git clone https://github.com/datacamp/project.git new.name
 # this copies the new project into your directory
@@ -187,16 +265,27 @@ git clone https://github.com/datacamp/project.git new.name
 
 # 8.2 Adding a remote repository to your project ------------
 
-# You can add one more remotes using:
+# When you have an RStudio project with a local repository,
+# you can have a remote copy of it
+# First you must create a remote repository in, say, GitHub
+# Then, you can add the remote repo using:
 git remote add remote-name URL
-# Or remove existing ones:
+
+# You can have many remote repositories with different names
+# And you can remove any of them:
 git remote rm remote-name
 
-# Then, you can list the names of remotes:
-git remote  # or, if you want more info:
+# You can list the names of remotes:
+git remote  # or, if you want the IP address to be printed:
 git remote -v  # for verbose
 
-
+# Troubleshooting: 
+# When you can't access the remote, check the following:
+# is it a public or private repo
+# privates can be more tricky so you can make it public 
+# or if it is private, make sure that you have accepted the invitation
+# and that the project has a git repo started
+# and that you are well identified
 
 # 8.3 Pull changes from the remotes -----------
 # Git keeps track of remote repositories so that you can pull changes
@@ -206,7 +295,7 @@ git remote -v  # for verbose
 # work from the remote repository so you have the latest version, 
 # do some work yourself and the push back to the remote
 
-# copy everything in the "remote-branch" branch in the "remote-repo" repo
+# copy everything in the "remote-branch" branch of the "remote-repo" 
 # to your current branch of your local repo
 git pull remote-repo remote-branch
 
